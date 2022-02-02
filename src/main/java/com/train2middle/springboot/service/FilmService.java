@@ -3,9 +3,11 @@ package com.train2middle.springboot.service;
 import com.train2middle.springboot.model.Film;
 import com.train2middle.springboot.repository.FilmRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,9 @@ public class FilmService {
     }
 
     public Film getFilmById(Long id) {
-        return filmRepository.findById(id).get();
+        Optional<Film> film = filmRepository.findById(id);
+        if (film.isEmpty()) throw new ObjectNotFoundException(id,"Film");
+        return film.get();
     }
 
     public Film saveFilm(Film film) {
@@ -26,7 +30,7 @@ public class FilmService {
     }
 
     public Film updateFilm(Long id, Film film) {
-        Film tmp = filmRepository.findById(id).get();
+        Film tmp = getFilmById(id);
         film.setId(tmp.getId());
         return filmRepository.save(film);
     }
