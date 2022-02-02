@@ -16,4 +16,22 @@ public class FilmService {
     public List<Film> getAll() {
         return filmRepository.findAll();
     }
+
+    public Film getFilmById(Long id) {
+        return filmRepository.findById(id).get();
+    }
+
+    public Film saveFilm(Film film) {
+        return filmRepository.save(film);
+    }
+
+    public Film updateFilm(Long id, Film film) {
+        Film tmp = filmRepository.findById(id).get();
+        film.setId(tmp.getId());
+        return filmRepository.save(film);
+    }
+
+    public void deleteFilmById(Long id) {
+        filmRepository.deleteById(id);
+    }
 }
